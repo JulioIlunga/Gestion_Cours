@@ -25,7 +25,7 @@ class Students
     #[ORM\Column(length: 30)]
     private ?string $gender = null;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $birth_date = null;
 
     #[ORM\Column(length: 255)]
@@ -36,7 +36,11 @@ class Students
 
     #[ORM\Column(length: 255)]
     private ?string $adress = null;
-
+/**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="students")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $teacher;
     #[ORM\Column]
     private ?float $generale_average = null;
 
@@ -175,6 +179,17 @@ class Students
     {
         return $this->results_evaluations;
     }
+    public function getTeacher(): ?User // Ou ?Professor
+{
+    return $this->teacher;
+}
+
+public function setProfessor(?User $teacher): self // Ou ?Professor
+{
+    $this->teacher = $teacher;
+
+    return $this;
+}
 
     public function addResultsEvaluation(EvaluationsStudentsResults $resultsEvaluation): static
     {

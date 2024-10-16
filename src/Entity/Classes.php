@@ -18,6 +18,12 @@ class Classes
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $level = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $section = null;
+
     #[ORM\Column]
     private ?int $students_nbr = null;
 
@@ -45,6 +51,29 @@ class Classes
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getLevel(): ?string
+    {
+        return $this->level;
+    }
+
+    public function setLevel(string $level): static
+    {
+        $this->level = $level;
+
+        return $this;
+    }   
+    public function getSection(): ?string
+    {
+        return $this->section;
+    }
+
+    public function setSection(string $section): static
+    {
+        $this->level = $section;
 
         return $this;
     }
@@ -90,4 +119,5 @@ class Classes
 
         return $this;
     }
+
 }

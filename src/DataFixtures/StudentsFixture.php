@@ -7,6 +7,9 @@ use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use App\Entity\Students;
 
+/**
+ * @Doctrine\Bundle\FixturesBundle\Fixture 
+ */
 class StudentsFixture extends Fixture
 {
     public function load(ObjectManager $manager, ): void
@@ -25,5 +28,9 @@ class StudentsFixture extends Fixture
 
 
         $manager->flush();
+    }
+    public static function getGroups(): array
+    {
+        return ['students'];
     }
 }

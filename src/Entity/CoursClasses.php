@@ -3,85 +3,42 @@
 namespace App\Entity;
 
 use App\Repository\CoursClassesRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CoursClassesRepository::class)]
+#[ORM\Table(name: 'cours_classes')]
 class CoursClasses
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\ManyToOne(targetEntity: Cours::class)]
+    #[ORM\JoinColumn(name: 'cours_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\Id] // cours_id fait partie de la clé primaire composite
+    private ?Cours $cours = null;
 
-    /**
-     * @var Collection<int, Cours>
-     */
-    #[ORM\ManyToMany(targetEntity: Cours::class)]
-    private Collection $cours_id;
+    #[ORM\ManyToOne(targetEntity: Classes::class)]
+    #[ORM\JoinColumn(name: 'classe_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\Id] // classe_id fait partie de la clé primaire composite
+    private ?Classes $classe = null;
 
-    /**
-     * @var Collection<int, Classes>
-     */
-    #[ORM\ManyToMany(targetEntity: Classes::class)]
-    private Collection $class_id;
-
-    public function __construct()
+    public function getCours(): ?Cours
     {
-        $this->cours_id = new ArrayCollection();
-        $this->class_id = new ArrayCollection();
+        return $this->cours;
     }
 
-    public function getId(): ?int
+    public function setCours(?Cours $cours): self
     {
-        return $this->id;
-    }
-
-    /**
-     * @return Collection<int, Cours>
-     */
-    public function getCoursId(): Collection
-    {
-        return $this->cours_id;
-    }
-
-    public function addCoursId(Cours $coursId): static
-    {
-        if (!$this->cours_id->contains($coursId)) {
-            $this->cours_id->add($coursId);
-        }
+        $this->cours = $cours;
 
         return $this;
     }
 
-    public function removeCoursId(Cours $coursId): static
+    public function getClasse(): ?Classes
     {
-        $this->cours_id->removeElement($coursId);
-
-        return $this;
+        return $this->classe;
     }
 
-    /**
-     * @return Collection<int, Classes>
-     */
-    public function getClassId(): Collection
+    public function setClasse(?Classes $classe): self
     {
-        return $this->class_id;
-    }
-
-    public function addClassId(Classes $classId): static
-    {
-        if (!$this->class_id->contains($classId)) {
-            $this->class_id->add($classId);
-        }
-
-        return $this;
-    }
-
-    public function removeClassId(Classes $classId): static
-    {
-        $this->class_id->removeElement($classId);
+        $this->classe = $classe;
 
         return $this;
     }

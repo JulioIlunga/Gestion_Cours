@@ -8,9 +8,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType; // Correct import
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Date;
 
 class StudentType extends AbstractType
 {
@@ -39,8 +39,9 @@ class StudentType extends AbstractType
                 'class' => Classes::class,
                 'choice_label' => 'id',
             ])
+            ->add("Save", SubmitType::class)
         ;
-    }
+    } 
 
     public function configureOptions(OptionsResolver $resolver): void
     {

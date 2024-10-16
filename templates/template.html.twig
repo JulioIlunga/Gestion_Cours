@@ -95,7 +95,7 @@
                         <div class="dropdown d-inline-block">
                             <button type="button" class="btn header-item waves-effect"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img id="header-lang-img" src="{{asset('assets/images/flags/us.jpg')}}" alt="Header Language" height="16">
+                                {# <img id="header-lang-img" src="{{asset('assets/images/flags/us.jpg')}}" alt="Header Language" height="16"> #}
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
 
@@ -134,8 +134,7 @@
                         <div class="dropdown d-inline-block">
                             <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="rounded-circle header-profile-user" src="{{asset('assets/images/users/avatar-1.jpg')}}"
-                                    alt="Header Avatar">
+                                <i class="bx bx-user"></i>
                                 <span class="d-none d-xl-inline-block ms-1" key="t-henry">Account</span>
                                 <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                             </button>
@@ -143,7 +142,7 @@
                                 <!-- item-->
                                 <a class="dropdown-item" href="{{path('app_login')}}"><i class="bx bx-user font-size-16 align-middle me-1"></i> <span key="t-profile">Login</span></a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="auth-login.html"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">Logout</span></a>
+                                <a class="dropdown-item text-danger" href="{{path('app_logout')}}"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">Logout</span></a>
                             </div>
                         </div>
 
@@ -174,14 +173,51 @@
                                     <span key="t-dashboards">Dashboards</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#" key="t-default">Students</a></li>
-                                    <li><a href="#" key="t-saas">Teachers</a></li>
-                                    <li><a href="#" key="t-crypto">Class</a></li>
+                                    <li>
+                                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                            <i class="bx bx-group"></i>
+                                            <span key="t-email">Elèves</span>
+                                        </a>
+                                        <ul class="sub-menu" aria-expanded="false">
+                                        <li><a href="{{path('student-list')}}" key="t-inbox">Liste des Elèves</a></li>
+                                            <li><a href="{{path('student_add')}}" key="t-inbox">Enregistrer un Elève</a></li>
+                                            
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                            <i class="bx bx-user"></i>
+                                            <span key="t-email">Enseignants</span>
+                                        </a>
+                                        <ul class="sub-menu" aria-expanded="false">
+                                            <li><a href="#" key="t-inbox">Liste des Enseignants</a></li>
+                                            <li><a href="#" key="t-inbox">Ajouter un Enseignats</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                            <i class="bx bx-building-house"></i>
+                                            <span key="t-email">Class</span>
+                                        </a>
+                                        <ul class="sub-menu" aria-expanded="false">
+                                            <li><a href="#" key="t-inbox">Listes des classes</a></li>
+                                            <li><a href="{{path('classe_add')}}" key="t-inbox">Ajouter une classe</a></li>
+                                        </ul>
+                                    </li><li>
+                                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                            <i class="bx bx-book-open"></i>
+                                            <span key="t-email">Cours</span>
+                                        </a>
+                                        <ul class="sub-menu" aria-expanded="false">
+                                            <li><a href="{{path('cours_add')}}" key="t-inbox">Ajouter un cours</a></li>
+                                        </ul>
+                                    </li>
+                                    
                                 </ul>
                             </li>
 
                             
-                            <li class="menu-title" key="t-apps">Apps</li>
+                            {# <li class="menu-title" key="t-apps">Apps</li>
 
                 
 
@@ -191,9 +227,8 @@
                                     <span key="t-email">Calendar</span>
                                 </a>
                                    <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#" key="t-inbox">Année en cours</a></li>
-                                    <li><a href="#" key="t-read-email"></a></li>
-                                    </ul>
+                                     <li><a href="#" key="t-inbox">Année en cours</a></li>
+                                   </ul>
                             </li>
 
                            
@@ -243,7 +278,7 @@
                                     <li><a href="#" key="t-blog-grid">Blog Grid</a></li>
                                     <li><a href="#" key="t-blog-details">Blog Details</a></li>
                                 </ul>
-                            </li>
+                            </li> #}
 
                             {# <li class="menu-title" key="t-pages">Pages</li> #}
 
