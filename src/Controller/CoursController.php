@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Cours;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Form\CoursType;
+use App\Repository\CoursRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,7 @@ class CoursController extends AbstractController
     }
     #[Route('/add', name: 'cours_add')]
 
-    public function addClasse(ManagerRegistry $doctrine, Request $request ): Response
+    public function addCours(ManagerRegistry $doctrine, Request $request ): Response
     {
         $entityManager = $doctrine->getManager();
         $cours = new Cours();
@@ -48,8 +49,23 @@ class CoursController extends AbstractController
             return $this->render('cours/add-cours.html.twig', [
                 'form' => $form->createView()
             ]);
-        }
+        } 
         
-        
+    }
+    #[Route('/list', name: 'cours_list')]
+    public function listCours(CoursRepository $coursRepository)
+    {
+        $cours = $coursRepository->findAll();
+
+        return $this->render('cours/cours-list.html.twig', [
+            'cours' => $cours,
+        ]);
+    }
+    #[Route('/{id}', name: 'cours_details')]
+    public function details(Cours $cours): Response
+    {
+        return $this->render('cours/details-cours.html.twig', [
+            'cours' => $cours,
+        ]);
     }
 }

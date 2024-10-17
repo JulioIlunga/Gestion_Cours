@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Evaluations;
+use App\Entity\Classes;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -15,6 +16,20 @@ class EvaluationsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Evaluations::class);
     }
+
+    public function findByClasseNom(?Classes $classe): array
+{
+    if(!$classe)
+    {
+        return [];
+    }
+    return $this->createQueryBuilder('e')
+        ->join('e.class_id', 'c') // Jointure avec l'entité Classes
+        ->where('c.name = :classe')
+        ->setParameter('classe', $classe)
+        ->getQuery()
+        ->getResult();
+}
 
     //    /**
     //     * @return Evaluations[] Returns an array of Evaluations objects

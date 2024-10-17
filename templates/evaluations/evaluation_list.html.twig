@@ -1,0 +1,37 @@
+{# templates/evaluations/evaluation_list.html.twig #}
+{% extends "template.html.twig" %}
+{% block title%} Liste des évaluations{% endblock %}
+{% block body %}
+{{ form_start(form) }}
+    {{ form_widget(form) }} 
+    <button type="submit" class="btn btn-primary">Rechercher</button>
+{{ form_end(form) }}
+{% if evaluations %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Cours</th>
+                <th>Type</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Points max.</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for evaluation in evaluations %}
+                <tr>
+                    <td>{{ evaluation.cours_id }}</td>
+                    <td>{{ evaluation.evaluation_type }}</td>
+                    <td>{{ evaluation.start_at|date('Y-m-d H:i') }}</td>
+                    <td>{{ evaluation.end_at|date('Y-m-d H:i') }}</td>
+                    <td>{{ evaluation.max_points }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+
+    <p style="margin-top : 20px"><mark>Aucune évaluation trouvée pour cette classe.</mark></p>
+{% endif %}
+
+{% endblock %}

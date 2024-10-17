@@ -1,0 +1,31 @@
+{# templates/classes/list.html.twig #}
+
+{% extends 'template.html.twig' %} 
+
+{% block title %}Liste des classes{% endblock %}
+
+{% block body %}
+
+    <h1>Liste des classes</h1>
+
+    <div class="row">
+        {% for classe in classes %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ classe.name }}</h5>
+                        <p class="card-text">
+                            Niveau: {{ classe.level }}<br>
+                            Section: {{ classe.section }}<br>
+                            {# Nombre d'élèves: {{ classe.studentsCount }} #}
+                        </p>
+                        <a href="{{ path('classes_details', { id: classe.id }) }}" class="btn btn-primary">Voir les détails</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <a href="{{ path('classe_add') }}" class="btn btn-success">Ajouter une classe</a>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{# templates/cours/cours-list.html.twig #}
+
+{% extends 'template.html.twig' %}
+
+{% block title %}Liste des cours{% endblock %}
+
+{% block body %}
+    {# <form class="app-search d-none d-lg-block" method="get" action="{{ path('app_cours_list') }}">
+        <div class="position-relative">
+            <input type="text" name="nomClasse" class="form-control" placeholder="Rechercher par classe...">
+            <span class="bx bx-search-alt"></span>
+        </div>
+    </form> #}
+
+    <h1>Liste des cours</h1>
+
+    {% if cours %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Classe</th>
+                    <th>Enseignant</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cours in cours %}
+                    <tr>
+                        <td>{{ cours.title }} </td>
+                        {# <td>{{ cours.classe_id }}</td> #}
+                        <td>{{ cours.teacher }}</td>
+                        <td>{{ cours.teacher }}</td>
+                        <td> <a href="{{ path('cours_details', { id: cours.id }) }}" title="Voir les détails">
+                                <i class="fas fa-info"></i> {# Icône "+" #}
+                            </a></td>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucun cours trouvé pour cette classe.</p>
+    {% endif %}
+
+    <a href="{{ path('cours_add') }}" class="btn btn-primary">Ajouter un cours</a>
+{% endblock %}

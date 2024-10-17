@@ -23,19 +23,26 @@ class Classes
 
     #[ORM\Column(length: 255)]
     private ?string $section = null;
-
-    #[ORM\Column]
-    private ?int $students_nbr = null;
+    /**
+     * @ORM\OneToMany(targetEntity: Cours::class, mappedBy="classe_id")
+     */
+    private $cours;
+    /**
+     * @ORM\OneToMany(targetEntity: Students::class, mappedBy="class_id")
+     */
+    private $students;
 
     /**
-     * @var Collection<int, Students>
+     * @ORM\OneToOne(targetEntity: Students::class, mappedBy="class_id")
      */
-    #[ORM\OneToMany(targetEntity: Students::class, mappedBy: 'class_id')]
-    private Collection $head_student;
+    private $head_student; 
+
 
     public function __construct()
     {
-        $this->head_student = new ArrayCollection();
+        // $this->head_student = new ArrayCollection();
+        $this->students = new ArrayCollection();
+        $this->cours = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -73,37 +80,24 @@ class Classes
 
     public function setSection(string $section): static
     {
-        $this->level = $section;
+        $this->section = $section;
 
         return $this;
     }
 
-    public function getStudentsNbr(): ?int
+    public function getStudentsCount(): int
     {
-        return $this->students_nbr;
+        return $this->students->count(); 
     }
 
-    public function setStudentsNbr(int $students_nbr): static
-    {
-        $this->students_nbr = $students_nbr;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Students>
-     */
-    public function getHeadStudent(): Collection
+    public function getHeadStudent(): ?Students // Corrigé pour retourner un seul étudiant
     {
         return $this->head_student;
     }
 
-    public function addHeadStudent(Students $headStudent): static
+    public function setHeadStudent(?Students $headStudent): static 
     {
-        if (!$this->head_student->contains($headStudent)) {
-            $this->head_student->add($headStudent);
-            $headStudent->setClassId($this);
-        }
+        $this->head_student = $headStudent;
 
         return $this;
     }
@@ -118,6 +112,42 @@ class Classes
         }
 
         return $this;
+    }
+
+        /**
+     * @return Collection<int, Cours>
+     */
+    public function getCours(): Collection
+    {
+        return $this->cours;
+    }
+
+    public function addCour(Cours $cour): self
+{
+    if (!$this->cours->contains($cour)) {
+        $this->cours->add($cour);
+        $cour->setClassId($this);
+ // Assurez-vous que la relation inverse est définie
+    }
+
+    return $this;
+}
+
+    public function removeCour(Cours $cour): self
+    {
+        if ($this->cours->removeElement($cour)) {
+            // set the owning side to null (unless already changed)
+            if ($cour->getClassId() === $this) {
+                $cour->setClassId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getName(); // Remplacez 'getName()' par la méthode qui retourne le nom de la classe
     }
 
 }

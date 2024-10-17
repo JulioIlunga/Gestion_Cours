@@ -1,13 +1,42 @@
+{# templates/classes/add.html.twig #}
+
 {% extends 'template.html.twig' %}
 
-
-{% block title %}<title>Class Form</title>{% endblock %}
-
+{% block title %}Ajouter une classe{% endblock %}
 
 {% block body %}
-    {{ form(form) }}
-    
-    
-    
-{% endblock %}
 
+    <h1>Ajouter une classe</h1>
+{# templates/classes/add.html.twig #}
+
+{{ form_start(form) }}
+
+    {{ form_row(form.name) }}
+
+    <div id="level-field"> 
+        {{ form_row(form.level) }} 
+    </div>
+
+    <div id="section-field" style="display: none;"> 
+        {{ form_row(form.section) }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+
+{{ form_end(form) }}
+
+<script>
+    const levelField = document.getElementById('level-field');
+    const sectionField = document.getElementById('section-field');
+
+    levelField.addEventListener('change', function() {
+        const selectedLevel = levelField.querySelector('input[name="classes[level]"]:checked').value;
+        if (selectedLevel === 'humanités') {
+            sectionField.style.display = 'block';
+        } else {
+            sectionField.style.display = 'none';
+        }
+    });
+</script>
+
+{% endblock %}

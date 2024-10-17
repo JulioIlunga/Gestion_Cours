@@ -6,6 +6,7 @@ use App\Entity\Students;
 use App\Form\StudentType;
 use App\Repository\StudentsRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry as DoctrineManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class StudentContoller extends AbstractController
 {
+    private $entityManager;
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     #[Route('/', name: 'student')]
 
     public function index(): Response
@@ -48,7 +54,7 @@ class StudentContoller extends AbstractController
         }else{
             $this->addFlash("error","L'enregistrement a échoué! Veuillez réessayer");
 
-            return $this->redirectToRoute('students-add', [
+            return $this->render('student/add-student.html.twig', [
                 'form' => $form->createView()
             ]);
         }
@@ -57,20 +63,28 @@ class StudentContoller extends AbstractController
     }
     #[Route('/list', name:'student-list')]
 
-    public function studentList(ManagerRegistry $doctrine, StudentsRepository $studentsRepository): Response {
+    public function studentList( StudentsRepository $studentsRepository): Response {
 
-        $user = $this->getUser();
-
-        if (!$user) {
-            // Gérer le cas où l'utilisateur n'est pas connecté (redirection vers la page de login par exemple)
-            return $this->redirectToRoute('app_login'); 
-        }
-
-        // Récupérez les étudiants liés au professeur connecté
-        $students = $studentsRepository->findBy(['teacher' => $user]); 
+        $students = $studentsRepository->findAll(); 
 
         return $this->render('student/students-list.html.twig', ['students' => $students]);
     }
+
+    #[Route('/{id}', name:'student-detail')]
+public function detail(StudentsRepository $studentsRepository, int $id): Response 
+{
+    $student = $studentsRepository->find($id); 
+
+    if (!$student) {
+        $this->addFlash('error', "L'élève n'existe pas ");
+        return $this->redirectToRoute('student_list');
+    }
+
+    return $this->render('student/student-detail.html.twig', [
+        'student' => $student 
+    ]);
+}
+
 
     //     $repository = $doctrine->getRepository(Students::class);
     //     $students = $repository->findAll();

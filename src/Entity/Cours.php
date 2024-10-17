@@ -14,8 +14,12 @@ class Cours
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private ?string $title = null; 
 
+    #[ORM\Column(length: 255)]
+    private ?string $teacher = null;
+
+   
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +33,19 @@ class Cours
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    
+    public function getTeacher(): ?string
+    {
+        return $this->teacher;
+    }
+
+    public function setTeacher(string $teacher): static
+    {
+        $this->teacher = $teacher;
 
         return $this;
     }

@@ -16,6 +16,16 @@ class CoursRepository extends ServiceEntityRepository
         parent::__construct($registry, Cours::class);
     }
 
+//     public function findByClasseNom(string $nomClasse): array
+// {
+//     return $this->createQueryBuilder('c')
+//         ->join('c.class_id', 'cl') // Jointure avec l'entité Classes
+//         ->where('cl.name = :nomClasse')
+//         ->setParameter('nomClasse', $nomClasse)
+//         ->getQuery()
+//         ->getResult();
+// }
+
     //    /**
     //     * @return Cours[] Returns an array of Cours objects
     //     */

@@ -6,7 +6,7 @@
 <head>
         
         <meta charset="utf-8" />
-        {% block title %} <title>Blog Dashboard | Skote - Admin & Dashboard Template</title> {% endblock %}
+         <title>{% block title %}Blog Dashboard | Skote - Admin & Dashboard Template{% endblock %}</title> 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesbrand" name="author" />
@@ -59,12 +59,7 @@
                         </button>
 
                         <!-- App Search-->
-                        <form class="app-search d-none d-lg-block">
-                            <div class="position-relative">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="bx bx-search-alt"></span>
-                            </div>
-                        </form>
+                        
 
                        
                     </div>
@@ -184,34 +179,41 @@
                                             
                                         </ul>
                                     </li>
-                                    <li>
-                                        <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                            <i class="bx bx-user"></i>
-                                            <span key="t-email">Enseignants</span>
-                                        </a>
-                                        <ul class="sub-menu" aria-expanded="false">
-                                            <li><a href="#" key="t-inbox">Liste des Enseignants</a></li>
-                                            <li><a href="#" key="t-inbox">Ajouter un Enseignats</a></li>
-                                        </ul>
-                                    </li>
+                                    
                                     <li>
                                         <a href="javascript: void(0);" class="has-arrow waves-effect">
                                             <i class="bx bx-building-house"></i>
                                             <span key="t-email">Class</span>
                                         </a>
                                         <ul class="sub-menu" aria-expanded="false">
-                                            <li><a href="#" key="t-inbox">Listes des classes</a></li>
+                                            <li><a href="{{path('classes_list')}}" key="t-inbox">Listes des classes</a></li>
                                             <li><a href="{{path('classe_add')}}" key="t-inbox">Ajouter une classe</a></li>
-                                        </ul>
-                                    </li><li>
+                                        
+                                        <li>
                                         <a href="javascript: void(0);" class="has-arrow waves-effect">
                                             <i class="bx bx-book-open"></i>
-                                            <span key="t-email">Cours</span>
+                                            <span key="t-email">Evaluation</span>
                                         </a>
                                         <ul class="sub-menu" aria-expanded="false">
-                                            <li><a href="{{path('cours_add')}}" key="t-inbox">Ajouter un cours</a></li>
+                                            <li><a href="{{path('evaluation_list')}}" key="t-inbox">Liste des evaluations</a></li>
+                                            <li><a href="{{path('evaluation_create')}}" key="t-inbox">Creer une evaluation</a></li>
+                                        </ul>
                                         </ul>
                                     </li>
+                                    </li>
+                                        <li>
+                                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                                <i class="bx bx-book-open"></i>
+                                                <span key="t-email">Cours</span>
+                                            </a>
+                                            <ul class="sub-menu" aria-expanded="false">
+                                                <li><a href="{{path('cours_list')}}" key="t-inbox">Liste des cours</a></li>
+                                                <li><a href="{{path('cours_add')}}" key="t-inbox">Ajouter un cours</a></li>
+                                            </ul>
+                                        </li>
+                                    </li>
+                                    
+                                    
                                     
                                 </ul>
                             </li>
@@ -328,11 +330,12 @@
 
                 <div class="page-content">
                     <div class="container-fluid">
-                    {% block body %}
-                        <!-- start page title -->
-            
-            <!-- end main content-->
-                {% endblock %}
+                        {% block body %}
+                            <!-- start page title -->
+                
+                        {% endblock %}
+                    </div>
+                </div>
         </div>
         <!-- END layout-wrapper -->
 

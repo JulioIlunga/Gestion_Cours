@@ -1,14 +1,17 @@
 {% extends 'template.html.twig'%}
 
-{% block title %}<title>Students list</title>{% endblock %}
+{% block title %}Students list{% endblock %}
 {% block body %}
 
 <div class="row">
     {% for student in students %}
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
+    <div class="card" style="width: 18rem; margin = 5px;">
+        <div class="card-body" > 
             <h5 class="card-title">{{ student.name}}</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{ student.firstname }} {{ student.name }}</h6>
+            <a href="{{ path('student-detail', {id: student.id}) }}" class="card-link">
+                <i class="fas fa-info-circle"></i>
+            </a>
              {# <a href="{{ path('personne.detail', {id: student.id}) }}" class="card-link">
                 <i class="fas fa-info-circle"></i>
             </a>

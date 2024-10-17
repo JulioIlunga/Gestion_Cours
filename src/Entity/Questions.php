@@ -24,16 +24,11 @@ class Questions
     #[ORM\OneToMany(targetEntity: Responses::class, mappedBy: 'question_id')]
     private Collection $response_id;
 
-    /**
-     * @var Collection<int, Evaluations>
-     */
-    #[ORM\ManyToMany(targetEntity: Evaluations::class, mappedBy: 'question_id')]
-    private Collection $evaluation_id;
-
+  
     public function __construct()
     {
         $this->response_id = new ArrayCollection();
-        $this->evaluation_id = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -83,30 +78,4 @@ class Questions
         return $this;
     }
 
-    /**
-     * @return Collection<int, Evaluations>
-     */
-    public function getEvaluationId(): Collection
-    {
-        return $this->evaluation_id;
-    }
-
-    public function addEvaluationId(Evaluations $evaluationId): static
-    {
-        if (!$this->evaluation_id->contains($evaluationId)) {
-            $this->evaluation_id->add($evaluationId);
-            $evaluationId->addQuestionId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEvaluationId(Evaluations $evaluationId): static
-    {
-        if ($this->evaluation_id->removeElement($evaluationId)) {
-            $evaluationId->removeQuestionId($this);
-        }
-
-        return $this;
-    }
 }

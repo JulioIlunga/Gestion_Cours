@@ -22,9 +22,7 @@ class Evaluations
     #[ORM\ManyToMany(targetEntity: Classes::class)]
     private Collection $class_id;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Cours $cours_id = null;
+  
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $start_at = null;
@@ -32,24 +30,19 @@ class Evaluations
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $end_at = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?EvaluationTypes $evaluation_type = null;
+    #[ORM\Column(length: 255)]
 
-    /**
-     * @var Collection<int, Questions>
-     */
-    #[ORM\ManyToMany(targetEntity: Questions::class, inversedBy: 'evaluation_id')]
-    private Collection $question_id;
+    private ?string $evaluation_type = null;
+
+    #[ORM\Column(length: 255)]
+
+    private ?string $nom_evaluation = null;
+
 
     #[ORM\Column]
     private ?int $max_points = null;
 
-    public function __construct()
-    {
-        $this->class_id = new ArrayCollection();
-        $this->question_id = new ArrayCollection();
-    }
+    
 
     public function getId(): ?int
     {
@@ -80,17 +73,6 @@ class Evaluations
         return $this;
     }
 
-    public function getCoursId(): ?Cours
-    {
-        return $this->cours_id;
-    }
-
-    public function setCoursId(?Cours $cours_id): static
-    {
-        $this->cours_id = $cours_id;
-
-        return $this;
-    }
 
     public function getStartAt(): ?\DateTimeInterface
     {
@@ -116,41 +98,33 @@ class Evaluations
         return $this;
     }
 
-    public function getEvaluationType(): ?EvaluationTypes
+    public function getEvaluationType(): ?string
     {
         return $this->evaluation_type;
     }
 
-    public function setEvaluationType(?EvaluationTypes $evaluation_type): static
+    public function setEvaluationType(string $evaluation_type): static
     {
         $this->evaluation_type = $evaluation_type;
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, Questions>
-     */
-    public function getQuestionId(): Collection
+    public function getNomEvaluation(): ?string
     {
-        return $this->question_id;
+        return $this->nom_evaluation;
     }
 
-    public function addQuestionId(Questions $questionId): static
+    public function setNomEvaluation(string $nom_evaluation): static
     {
-        if (!$this->question_id->contains($questionId)) {
-            $this->question_id->add($questionId);
-        }
+        $this->nom_evaluation = $nom_evaluation;
 
         return $this;
     }
+   
 
-    public function removeQuestionId(Questions $questionId): static
-    {
-        $this->question_id->removeElement($questionId);
+  
 
-        return $this;
-    }
+ 
 
     public function getMaxPoints(): ?int
     {

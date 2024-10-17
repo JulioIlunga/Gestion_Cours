@@ -1,0 +1,20 @@
+{# templates/classes/show.html.twig #}
+
+{% extends 'template.html.twig' %}
+
+{% block title %}Détails du cours{% endblock %}
+
+{% block body %}
+
+    <h1>{{ cours.title }}</h1>
+
+    <p>
+        Nom du cours: {{ cours.title }}<br>
+        {# Section: {{ cours.section }}<br> #}
+        
+    </p>
+
+    <a href="{{ path('classes_list') }}" class="btn btn-secondary">Retour à la liste des classes</a>
+    <a href="{{path('evaluation_create')}}" class="btn btn-secondary">Créer une evaluation</a>
+
+{% endblock %}

@@ -36,18 +36,16 @@ class Students
 
     #[ORM\Column(length: 255)]
     private ?string $adress = null;
-/**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="students")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $teacher;
+
     #[ORM\Column]
     private ?float $generale_average = null;
 
-    #[ORM\ManyToOne(inversedBy: 'head_student')]
+    #[ORM\ManyToOne(inversedBy: 'students')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Classes $class_id = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $photoFilename = null;
     /**
      * @var Collection<int, EvaluationsStudentsResults>
      */
@@ -179,17 +177,6 @@ class Students
     {
         return $this->results_evaluations;
     }
-    public function getTeacher(): ?User // Ou ?Professor
-{
-    return $this->teacher;
-}
-
-public function setProfessor(?User $teacher): self // Ou ?Professor
-{
-    $this->teacher = $teacher;
-
-    return $this;
-}
 
     public function addResultsEvaluation(EvaluationsStudentsResults $resultsEvaluation): static
     {
@@ -211,5 +198,17 @@ public function setProfessor(?User $teacher): self // Ou ?Professor
         }
 
         return $this;
+    }
+    public function getPhotoFilename(): ?string
+    {
+        return $this->photoFilename;
+    }
+
+    public function setPhotoFilename(?string $photoFilename): self
+    {
+        $this->photoFilename = $photoFilename;
+
+        return $this;
+
     }
 }

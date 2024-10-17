@@ -11,6 +11,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 
 class StudentType extends AbstractType
 {
@@ -38,6 +40,11 @@ class StudentType extends AbstractType
             ->add('class_id', EntityType::class, [
                 'class' => Classes::class,
                 'choice_label' => 'id',
+            ])
+            ->add('photo', FileType::class, [
+                'label' => 'Photo',
+                'mapped' => false,
+                'required' => false,
             ])
             ->add("Save", SubmitType::class)
         ;

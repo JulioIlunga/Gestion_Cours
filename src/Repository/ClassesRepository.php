@@ -14,8 +14,12 @@ class ClassesRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Classes::class);
+        
     }
 
+
+    
+    
     //    /**
     //     * @return Classes[] Returns an array of Classes objects
     //     */
