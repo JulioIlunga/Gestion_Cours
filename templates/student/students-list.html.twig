@@ -2,7 +2,13 @@
 
 {% block title %}Students list{% endblock %}
 {% block body %}
-
+{% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
 <div class="row">
     {% for student in students %}
     <div class="card" style="width: 18rem; margin = 5px;">

@@ -19,7 +19,10 @@ class Cours
     #[ORM\Column(length: 255)]
     private ?string $teacher = null;
 
-   
+    #[ORM\ManyToOne]
+    private ?Classes $classe = null;
+
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +49,18 @@ class Cours
     public function setTeacher(string $teacher): static
     {
         $this->teacher = $teacher;
+
+        return $this;
+    }
+
+    public function getClasse(): ?Classes
+    {
+        return $this->classe;
+    }
+
+    public function setClasse(?Classes $classe): static
+    {
+        $this->classe = $classe;
 
         return $this;
     }

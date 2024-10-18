@@ -16,20 +16,17 @@ class Evaluations
     #[ORM\Column]
     private ?int $id = null;
 
-    /**
-     * @var Collection<int, Classes>
-     */
-    #[ORM\ManyToMany(targetEntity: Classes::class)]
-    private Collection $class_id;
+   
 
+   
   
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $start_at = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)] 
     private ?\DateTimeInterface $end_at = null;
-
+ 
     #[ORM\Column(length: 255)]
 
     private ?string $evaluation_type = null;
@@ -42,37 +39,37 @@ class Evaluations
     #[ORM\Column]
     private ?int $max_points = null;
 
+   
+
+    #[ORM\ManyToOne]
+    private ?Cours $cours = null;
+
+    #[ORM\ManyToOne(inversedBy: 'evaluations')]
+    private ?Classes $classe = null;
+
+    /**
+     * @var Collection<int, Questions>
+     */
+    #[ORM\OneToMany(targetEntity: Questions::class, mappedBy: 'evaluations')]
+    private Collection $questions;
+
+    public function __construct()
+    {
+        $this->questions = new ArrayCollection();
+    }
+
+   
+
+   
+
     
 
-    public function getId(): ?int
+    public function getId(): ?int  
     {
         return $this->id;
     }
 
-    /**
-     * @return Collection<int, Classes>
-     */
-    public function getClassId(): Collection
-    {
-        return $this->class_id;
-    }
-
-    public function addClassId(Classes $classId): static
-    {
-        if (!$this->class_id->contains($classId)) {
-            $this->class_id->add($classId);
-        }
-
-        return $this;
-    }
-
-    public function removeClassId(Classes $classId): static
-    {
-        $this->class_id->removeElement($classId);
-
-        return $this;
-    }
-
+    
 
     public function getStartAt(): ?\DateTimeInterface
     {
@@ -137,4 +134,64 @@ class Evaluations
 
         return $this;
     }
+
+    
+
+  
+
+    public function getCours(): ?Cours
+    {
+        return $this->cours;
+    }
+
+    public function setCours(?Cours $cours): static
+    {
+        $this->cours = $cours;
+
+        return $this;
+    }
+
+    public function getClasse(): ?Classes
+    {
+        return $this->classe;
+    }
+
+    public function setClasse(?Classes $classe): static
+    {
+        $this->classe = $classe;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Questions>
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Questions $question): static
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions->add($question);
+            $question->setEvaluations($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Questions $question): static
+    {
+        if ($this->questions->removeElement($question)) {
+            // set the owning side to null (unless already changed)
+            if ($question->getEvaluations() === $this) {
+                $question->setEvaluations(null);
+            }
+        }
+
+        return $this;
+    }
+
+ 
 }

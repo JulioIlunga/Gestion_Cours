@@ -35,14 +35,24 @@ class Classes
     /**
      * @ORM\OneToOne(targetEntity: Students::class, mappedBy="class_id")
      */
-    private $head_student; 
+    private $head_student;
 
+    /**
+     * @var Collection<int, Evaluations>
+     */
+    #[ORM\OneToMany(targetEntity: Evaluations::class, mappedBy: 'classe')]
+    private Collection $evaluations;
+
+   
+   
 
     public function __construct()
     {
         // $this->head_student = new ArrayCollection();
         $this->students = new ArrayCollection();
         $this->cours = new ArrayCollection();
+        $this->evaluations = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -122,32 +132,68 @@ class Classes
         return $this->cours;
     }
 
-    public function addCour(Cours $cour): self
-{
-    if (!$this->cours->contains($cour)) {
-        $this->cours->add($cour);
-        $cour->setClassId($this);
- // Assurez-vous que la relation inverse est définie
+//     public function addCour(Cours $cour): self
+// {
+//     if (!$this->cours->contains($cour)) {
+//         $this->cours->add($cour);
+//         $cour->setClassId($this);
+//  // Assurez-vous que la relation inverse est définie
+//     }
+
+//     return $this;
+// }
+
+//     public function removeCour(Cours $cour): self
+//     {
+//         if ($this->cours->removeElement($cour)) {
+//             // set the owning side to null (unless already changed)
+//             if ($cour->getClassId() === $this) {
+//                 $cour->setClassId(null);
+//             }
+//         }
+
+//         return $this;
+//     }
+
+    public function __toString()
+    {
+        return $this->getName(); // Remplacez 'getName()' par la méthode qui retourne le nom de la classe
     }
 
-    return $this;
-}
-
-    public function removeCour(Cours $cour): self
+    /**
+     * @return Collection<int, Evaluations>
+     */
+    public function getEvaluations(): Collection
     {
-        if ($this->cours->removeElement($cour)) {
+        return $this->evaluations;
+    }
+
+    public function addEvaluation(Evaluations $evaluation): static
+    {
+        if (!$this->evaluations->contains($evaluation)) {
+            $this->evaluations->add($evaluation);
+            $evaluation->setClasse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvaluation(Evaluations $evaluation): static
+    {
+        if ($this->evaluations->removeElement($evaluation)) {
             // set the owning side to null (unless already changed)
-            if ($cour->getClassId() === $this) {
-                $cour->setClassId(null);
+            if ($evaluation->getClasse() === $this) {
+                $evaluation->setClasse(null);
             }
         }
 
         return $this;
     }
 
-    public function __toString()
-    {
-        return $this->getName(); // Remplacez 'getName()' par la méthode qui retourne le nom de la classe
-    }
+   
+
+   
+
+    
 
 }

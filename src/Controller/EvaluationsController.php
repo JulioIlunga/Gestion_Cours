@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Evaluations;
+use App\Entity\Classes;
 use App\Entity\Cours;
 use App\Form\ClasseEvaluationFilterType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,7 +39,7 @@ class EvaluationsController extends AbstractController
                 $entityManager->persist($evaluation);
                 $entityManager->flush();
     
-                $this->addFlash("succes","L'evaluation a été enregistrée avec succès");
+                $this->addFlash("succes","L'evaluation ". $evaluation->getNomEvaluation() ." a été enregistrée avec succès");
                 return $this->redirectToRoute('evaluation_list'); // Rediriger vers la liste des évaluations
             } catch (\Exception $e) {
                 $this->addFlash("error","Une erreur est survenue lors de l'enregistrement de l'évaluation.");
@@ -77,6 +78,8 @@ class EvaluationsController extends AbstractController
             'cours' => $cours,
         ]);
     }
+
+    
 
     
 }

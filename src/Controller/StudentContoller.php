@@ -2,16 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\Students;
+use App\Entity\Students; 
 use App\Form\StudentType;
 use App\Repository\StudentsRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry as DoctrineManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route; 
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 #[Route('admin/student')]
 
@@ -33,34 +35,107 @@ class StudentContoller extends AbstractController
 
     #[Route('/add', name: 'student_add')]
 
-    public function addStudent(ManagerRegistry $doctrine, Request $request ): Response
+
+    public function addStudent(ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
         $entityManager = $doctrine->getManager();
         $student = new Students();
         
         $form = $this->createForm(StudentType::class, $student);
 
-
         $form->handleRequest($request);
-        if($form->isSubmitted()){
-            // dump($student);
+        if ($form->isSubmitted() && $form->isValid()) 
+        {
+            
+            // Récupérer l'image depuis le formulaire
+            $imageFile = $form->get('photo')->getData(); // 'photo' est le nom du champ dans StudentType
+
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // Générer un nom de fichier sécurisé
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                try {
+                    // Déplacer l'image dans le répertoire de stockage
+                    $imageFile->move(
+                        $this->getParameter('images_directory'), 
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // Gérer   
+ 
+                    $this->addFlash('error', "Erreur lors du téléchargement de l'image.");
+                    return $this->redirectToRoute('student_add'); 
+                }
+
+                // Enregistrer le nom du fichier dans l'entité Student
+                $student->setPhotoFilename($newFilename); // Utiliser le nom correct de la propriété
+            }
+
             $manager = $doctrine->getManager();
             $manager->persist($student);
-
-
             $manager->flush();
-            $this->addFlash("succes","L'étudiant(e) ".$student->getFirstName().$student->getName(). " a été enregistré(e) avec succès");
+
+            $this->addFlash("success","L'étudiant(e) ".$student->getFirstName()." ".$student->getName(). " a été enregistré(e) avec succès");
             return $this->redirectToRoute('student-list');
-        }else{
-            $this->addFlash("error","L'enregistrement a échoué! Veuillez réessayer");
+        } else {
+            $this->addFlash("danger","L'enregistrement a échoué! Veuillez réessayer");
 
             return $this->render('student/add-student.html.twig', [
                 'form' => $form->createView()
             ]);
         }
-        
-        
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // public function addStudent(ManagerRegistry $doctrine, Request $request ): Response
+    // {
+    //     $entityManager = $doctrine->getManager();
+    //     $student = new Students();
+        
+    //     $form = $this->createForm(StudentType::class, $student);
+
+
+    //     $form->handleRequest($request);
+    //     if($form->isSubmitted()){
+            
+    //         $manager = $doctrine->getManager();
+    //         $manager->persist($student);
+
+
+    //         $manager->flush();
+    //         $this->addFlash("succes","L'étudiant(e) ".$student->getFirstName().$student->getName(). " a été enregistré(e) avec succès");
+    //         return $this->redirectToRoute('student-list');
+    //     }else{
+    //         $this->addFlash("error","L'enregistrement a échoué! Veuillez réessayer");
+
+    //         return $this->render('student/add-student.html.twig', [
+    //             'form' => $form->createView()
+    //         ]);
+    //     }
+        
+        
+    // }
     #[Route('/list', name:'student-list')]
 
     public function studentList( StudentsRepository $studentsRepository): Response {
@@ -76,7 +151,7 @@ public function detail(StudentsRepository $studentsRepository, int $id): Respons
     $student = $studentsRepository->find($id); 
 
     if (!$student) {
-        $this->addFlash('error', "L'élève n'existe pas ");
+        $this->addFlash('error', "Cet(te) élève n'existe pas ");
         return $this->redirectToRoute('student_list');
     }
 

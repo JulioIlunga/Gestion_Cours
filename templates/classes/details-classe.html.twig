@@ -5,7 +5,13 @@
 {% block title %}Détails de la classe{% endblock %}
 
 {% block body %}
-
+{% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
     <h1>{{ classe.name }}</h1>
 
     <p>
@@ -16,5 +22,7 @@
     </p>
 
     <a href="{{ path('classes_list') }}" class="btn btn-secondary">Retour à la liste des classes</a>
+    <a href="{{path('evaluation_create')}}" class="btn btn-secondary">Créer une evaluation</a>
+
 
 {% endblock %}

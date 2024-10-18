@@ -3,6 +3,25 @@
 {% block title %}AddQuestion Form{% endblock %}
 
 {% block body %}
-{{form(form)}}
+{% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+{{ form_start(form) }}
+
+    
+    {{ form_row(form.evaluations) }}
+        
+    
+    
+    {{ form_row(form.enonce_question) }}
+    
+
+
+    {{ form_end(form) }}
+
 
 {% endblock %}

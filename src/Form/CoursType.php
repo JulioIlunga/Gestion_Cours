@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Form;
-
+ 
 use App\Entity\Cours;
 use App\Entity\Classes; // Importer l'entité Classes
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -23,11 +23,15 @@ class CoursType extends AbstractType
                     'placeholder' => 'Ex: Mathématiques',
                 ],
             ])
-            ->add('teacher')
-            ->add('class_id', EntityType::class, [ // Champ pour choisir la classe
+            ->add('teacher', TextType::class,[
+                'required' => false
+            ])
+
+            ->add('classe', EntityType::class, [ // Champ pour choisir la classe
                 'class' => Classes::class,
                 'choice_label' => 'name', // Afficher le nom de la classe
                 'label' => 'Classe',
+
             ])
             ->add('Enregistrer', SubmitType::class)
         ;

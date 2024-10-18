@@ -2,10 +2,17 @@
 {% extends "template.html.twig" %}
 {% block title%} Liste des évaluations{% endblock %}
 {% block body %}
+{% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
 {{ form_start(form) }}
     {{ form_widget(form) }} 
     <button type="submit" class="btn btn-primary">Rechercher</button>
-{{ form_end(form) }}
+{{ form_end(form) }} 
 {% if evaluations %}
     <table class="table">
         <thead>
@@ -15,16 +22,25 @@
                 <th>Date de début</th>
                 <th>Date de fin</th>
                 <th>Points max.</th>
+                <th>Questions</th>
+                
             </tr>
         </thead>
         <tbody>
             {% for evaluation in evaluations %}
                 <tr>
-                    <td>{{ evaluation.cours_id }}</td>
-                    <td>{{ evaluation.evaluation_type }}</td>
-                    <td>{{ evaluation.start_at|date('Y-m-d H:i') }}</td>
-                    <td>{{ evaluation.end_at|date('Y-m-d H:i') }}</td>
-                    <td>{{ evaluation.max_points }}</td>
+                    <td>{{ evaluation.cours.title }}</td>
+                    <td>{{ evaluation.evaluationType }}</td>
+                    <td>{{ evaluation.startAt|date('Y-m-d H:i') }}</td>
+                    <td>{{ evaluation.endAt|date('Y-m-d H:i') }}</td> 
+                    <td>{{ evaluation.maxPoints }}</td>
+                    <td>
+                        <a 
+                            href="{{path('question_add')}}" title="ajouter des questions">
+                            <i class="fas fa-plus"></i> {# Icône "+" #}
+                        </a>
+                    </td>
+
                 </tr>
             {% endfor %}
         </tbody>

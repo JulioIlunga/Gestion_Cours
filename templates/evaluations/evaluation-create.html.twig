@@ -3,16 +3,23 @@
 {% block title %}Créer une évaluation{% endblock %}
 
 {% block body %}
+{% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
     <h1>Créer une évaluation</h1>
 
     {{ form_start(form) }}
 
     <div class="row"> 
         <div class="col-md-6"> 
-            {{ form_row(form.class_id) }}
+            {{ form_row(form.classe) }}
         </div>
         <div class="col-md-6"> 
-            {{ form_row(form.cours_id) }}
+            {{ form_row(form.cours) }}
         </div>
     </div>
     <div class="row"> 
@@ -27,11 +34,28 @@
 
     {{ form_row(form.evaluation_type) }}
     {{ form_row(form.max_points) }}
-
+    
 
     {{ form_end(form) }}
 
+// <script>
+//     // Récupérer le conteneur des questions
+//     var container = document.getElementById('questions_container');
+//     // Récupérer le prototype (modèle de champ de question)
+//     var prototype = container.dataset.prototype;
+//     var index = {{ form.questions|length }};
 
+//     document.getElementById('add-question-btn').addEventListener('click', function () {
+//         // Remplacer "__name__" dans le prototype par l'index actuel
+//         var newForm = prototype.replace(/__name__/g, index);
+
+//         // Ajouter le nouveau formulaire dans le conteneur
+//         container.insertAdjacentHTML('beforeend', newForm);
+
+//         // Incrémenter l'index pour la prochaine question
+//         index++;
+//     });
+// </script>
 
    
 {% endblock %}

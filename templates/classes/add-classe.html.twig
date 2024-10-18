@@ -5,7 +5,13 @@
 {% block title %}Ajouter une classe{% endblock %}
 
 {% block body %}
-
+{% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
     <h1>Ajouter une classe</h1>
 {# templates/classes/add.html.twig #}
 

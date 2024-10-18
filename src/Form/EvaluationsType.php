@@ -26,15 +26,16 @@ class EvaluationsType extends AbstractType
                 'placeholder' => 'Ex: Interro chimie 6ième B',
             ],
         ])
-        ->add('class_id', EntityType::class, [
+        ->add('classe', EntityType::class, [
             'class' => Classes::class,
             'attr' => ['class' => 'class-select'],
             'choice_label' => 'name', // On utilise directement l'attribut "name" de l'entité Classes
             'label' => 'Classe',
-            'multiple' => true,
+            'multiple' => false,
             'expanded' => false,
+            
         ])
-            ->add('cours_id', EntityType::class, [
+            ->add('cours', EntityType::class, [
                 'class' => Cours::class,
                 'attr' => ['class' => 'cours-select'],
                 'choice_label' => function (Cours $cours) { 
@@ -55,7 +56,7 @@ class EvaluationsType extends AbstractType
                     'Interrogation' => 'Interrogation',
                     'Examen' => 'Examen'],
                     'expanded' => true, // Pour afficher des boutons radio
-                    'multiple' => false, 
+                    'multiple' => false,  
 
                 
             ])

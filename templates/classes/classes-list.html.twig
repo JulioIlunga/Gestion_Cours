@@ -5,7 +5,13 @@
 {% block title %}Liste des classes{% endblock %}
 
 {% block body %}
-
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
     <h1>Liste des classes</h1>
 
     <div class="row">

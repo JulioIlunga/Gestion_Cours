@@ -24,6 +24,14 @@ class Questions
     #[ORM\OneToMany(targetEntity: Responses::class, mappedBy: 'question_id')]
     private Collection $response_id;
 
+    #[ORM\ManyToOne(inversedBy: 'questions')]
+    private ?Evaluations $evaluations = null;
+
+    #[ORM\Column]
+    private ?int $nbr_questions = null;
+
+  
+
   
     public function __construct()
     {
@@ -77,5 +85,31 @@ class Questions
 
         return $this;
     }
+
+    public function getEvaluations(): ?Evaluations
+    {
+        return $this->evaluations;
+    }
+
+    public function setEvaluations(?Evaluations $evaluations): static
+    {
+        $this->evaluations = $evaluations;
+
+        return $this;
+    }
+
+    public function getNbrQuestions(): ?int
+    {
+        return $this->nbr_questions;
+    }
+
+    public function setNbrQuestions(int $nbr_questions): static
+    {
+        $this->nbr_questions = $nbr_questions;
+
+        return $this;
+    }
+
+   
 
 }

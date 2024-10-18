@@ -4,5 +4,12 @@
 {% block title %} Home Page {% endblock %}
 
 {% block body %}
+{% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
     <h1>Page acceuil</h1>
 {% endblock %}

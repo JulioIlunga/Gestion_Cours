@@ -32,7 +32,7 @@ class ClassesController extends AbstractController
                'classes' => $classes,
            ]);
        }
-    #[Route('/add', name: 'classe_add')]
+    #[Route('/add', name: 'classe_add')] 
     public function addClasse(Request $request, EntityManagerInterface $entityManager): Response
     {
         $classe = new Classes();
@@ -43,7 +43,7 @@ class ClassesController extends AbstractController
             $entityManager->persist($classe);
             $entityManager->flush();
 
-            $this->addFlash('success','La classe a été ajoutée avec succès.');
+            $this->addFlash('success',"La classe ". $classe->getName() ." a été ajoutée avec succès.");
 
             return $this->redirectToRoute('classes_list'); // Redirigez vers la liste des classes après l'ajout
         }
