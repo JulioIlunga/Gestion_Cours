@@ -94,10 +94,15 @@ class Classes
 
         return $this;
     }
-
+ 
     public function getStudentsCount(): int
     {
-        return $this->students->count(); 
+        if ($this->students === null) {
+            return 0;
+        }
+
+    
+        return $this->students->count();
     }
 
     public function getHeadStudent(): ?Students // Corrigé pour retourner un seul étudiant
@@ -123,12 +128,15 @@ class Classes
 
         return $this;
     }
-
+ 
         /**
      * @return Collection<int, Cours>
      */
     public function getCours(): Collection
     {
+        if ($this->cours === null) {
+            $this->cours = new ArrayCollection();
+        }
         return $this->cours;
     }
 

@@ -28,21 +28,19 @@ class EvaluationsType extends AbstractType
         ])
         ->add('classe', EntityType::class, [
             'class' => Classes::class,
-            'attr' => ['class' => 'class-select'],
-            'choice_label' => 'name', // On utilise directement l'attribut "name" de l'entité Classes
+            'data' => $options['classe'],
+            'choice_label' => 'name',
             'label' => 'Classe',
             'multiple' => false,
             'expanded' => false,
             
         ])
-            ->add('cours', EntityType::class, [
-                'class' => Cours::class,
-                'attr' => ['class' => 'cours-select'],
-                'choice_label' => function (Cours $cours) { 
-                    return sprintf('%s', $cours->getTitle()); 
-                },
-                'label' => 'Cours',
-            ])
+        ->add('cours', EntityType::class, [
+            'class' => Cours::class,
+            'choices' => $options['cours'],
+            'choice_label' => 'title',
+            'multiple' => false,
+        ])
             ->add('start_at', DateTimeType::class, [
                 'widget' => 'single_text',
             ])
@@ -75,6 +73,8 @@ class EvaluationsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Evaluations::class,
+            'cours' => [],
+            'classe' => null,
         ]);
     }
 }

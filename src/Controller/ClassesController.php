@@ -6,6 +6,7 @@ use App\Entity\Classes;
 use App\Repository\ClassesRepository;
 use App\Repository\StudentsRepository;
 use App\Form\ClassesType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +32,7 @@ class ClassesController extends AbstractController
            return $this->render('classes/classes-list.html.twig', [
                'classes' => $classes,
            ]);
-       }
+       } 
     #[Route('/add', name: 'classe_add')] 
     public function addClasse(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -52,12 +53,31 @@ class ClassesController extends AbstractController
             'form' => $form->createView(),
         ]); 
     }
-
+ 
     #[Route('/{id}', name: 'classes_details')]
     public function details(Classes $classe): Response
     {
+        $studentCount = $classe->getStudentsCount(); 
         return $this->render('classes/details-classe.html.twig', [
             'classe' => $classe,
+            'studentCount' => $studentCount,
         ]);
+    }
+
+    #[Route('{classId}/cours', name: 'admin_classe_cours')]
+    public function getCoursForClasse(int $classId, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $classe = $entityManager->getRepository(Classes::class)->find($classId);
+        $cours = $classe->getCours();
+
+        $coursData = [];
+        foreach ($cours as $cours) {
+            $coursData[] = [
+                'id' => $cours->getId(),
+                'nom' => $cours->getTitle(),
+            ];
+        }
+
+        return new JsonResponse($coursData);
     }
 }

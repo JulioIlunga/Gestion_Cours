@@ -38,13 +38,12 @@ class CoursController extends AbstractController
 
 
             $manager->flush();
-            $this->addFlash("succes","Le cours ".$cours->getTitle()." a été ajouté avec succès");
-            return $this->render('cours/add-cours.html.twig', [
-                'form' => $form->createView()
+            $this->addFlash("success","Le cours ".$cours->getTitle()." a été ajouté avec succès");
+            return $this->redirectToRoute('cours_add')
 
-            ]);
+
+            ;
         }else{
-            $this->addFlash("error","La création a échoué! Veuillez réessayer");
 
             return $this->render('cours/add-cours.html.twig', [
                 'form' => $form->createView()

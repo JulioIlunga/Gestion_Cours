@@ -4,7 +4,7 @@
 
 {% block title %}Détails de la classe{% endblock %}
 
-{% block body %}
+{% block body %} 
 {% for label, messages in app.flashes %}
         {% for message in messages %}
             <div class="alert alert-{{ label }}">
@@ -20,9 +20,12 @@
             Section: {{ classe.section }}<br>
         {% endif %}
     </p>
+    <p> Nombre d'étudiants : {{studentCount}}</p>
 
     <a href="{{ path('classes_list') }}" class="btn btn-secondary">Retour à la liste des classes</a>
-    <a href="{{path('evaluation_create')}}" class="btn btn-secondary">Créer une evaluation</a>
+    <a href="{{ path('evaluation_list', {'classId': classe.id}) }}" class="btn btn-secondary">Voir la liste des evaluations</a>
+    <a href="{{path('evaluation_create',{'classId': classe.id})}}" class="btn btn-secondary">Créer une evaluation</a>
+
 
 
 {% endblock %}

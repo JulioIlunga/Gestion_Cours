@@ -5,6 +5,7 @@
 {% block body %}
 {% for label, messages in app.flashes %}
         {% for message in messages %}
+        
             <div class="alert alert-{{ label }}">
                 {{ message }}
             </div>
@@ -22,6 +23,9 @@
 
 
     {{ form_end(form) }}
+<div>
 
+
+</div>
 
 {% endblock %}

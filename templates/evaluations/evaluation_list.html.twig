@@ -1,53 +1,52 @@
 {# templates/evaluations/evaluation_list.html.twig #}
 {% extends "template.html.twig" %}
-{% block title%} Liste des évaluations{% endblock %}
+{% block title %}Liste des évaluations{% endblock %}
 {% block body %}
-{% for label, messages in app.flashes %}
+    {% for label, messages in app.flashes %}
         {% for message in messages %}
-            <div class="alert alert-{{ label }}">
-                {{ message }}
-            </div>
+            <div class="alert alert-{{ label }}">{{ message }}</div>
         {% endfor %}
     {% endfor %}
-{{ form_start(form) }}
-    {{ form_widget(form) }} 
-    <button type="submit" class="btn btn-primary">Rechercher</button>
-{{ form_end(form) }} 
-{% if evaluations %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Cours</th>
-                <th>Type</th>
-                <th>Date de début</th>
-                <th>Date de fin</th>
-                <th>Points max.</th>
-                <th>Questions</th>
-                
-            </tr>
-        </thead>
-        <tbody>
-            {% for evaluation in evaluations %}
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    {{ form_end(form) }}
+
+    {% if evaluations is not empty %}
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>{{ evaluation.cours.title }}</td>
-                    <td>{{ evaluation.evaluationType }}</td>
-                    <td>{{ evaluation.startAt|date('Y-m-d H:i') }}</td>
-                    <td>{{ evaluation.endAt|date('Y-m-d H:i') }}</td> 
-                    <td>{{ evaluation.maxPoints }}</td>
-                    <td>
-                        <a 
-                            href="{{path('question_add')}}" title="ajouter des questions">
-                            <i class="fas fa-plus"></i> {# Icône "+" #}
-                        </a>
-                    </td>
-
+                    <th>Cours</th>
+                    <th>Type</th>
+                    <th>Date de début</th>
+                    <th>Date de fin</th>
+                    <th>Points max.</th>
+                    <th>Questions</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-
-    <p style="margin-top : 20px"><mark>Aucune évaluation trouvée pour cette classe.</mark></p>
-{% endif %}
-
+            </thead>
+            <tbody>
+                {% for evaluation in evaluations %}
+                    <tr>
+                        <td>{{ evaluation.cours.title }}</td>
+                        <td>{{ evaluation.evaluationType }}</td>
+                        <td>{{ evaluation.startAt|date('Y-m-d H:i') }}</td>
+                        <td>{{ evaluation.endAt|date('Y-m-d H:i') }}</td>
+                        <td>{{ evaluation.maxPoints }}</td>
+                        <td>
+                            <a href="{{ path('question_list', {'classId': classe.id,'evaluationId': evaluation.id}) }}" title="Afficher les questions">
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">Aucune évaluation trouvée.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucune évaluation trouvée.</p>
+    {% endif %}
 {% endblock %}

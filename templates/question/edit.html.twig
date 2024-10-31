@@ -1,0 +1,11 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}Modifier la question{% endblock %}
+
+{% block body %}
+    <h1>Modifier la question</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}

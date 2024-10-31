@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Evaluations;
 use App\Entity\Classes;
 use App\Entity\Cours;
+use App\Entity\Questions;
+use App\Form\QuestionType;
 use App\Form\ClasseEvaluationFilterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-#[Route('/admin/evaluations')]
+#[Route('/admin/classes/{classId}/evaluations')]
 class EvaluationsController extends AbstractController
 {
     #[Route('/', name: 'app_evaluations')]
@@ -27,22 +29,39 @@ class EvaluationsController extends AbstractController
     }
 
     #[Route('/create', name:'evaluation_create')]
-    public function createEvaluation(Request $request, EntityManagerInterface $entityManager): Response
+    public function createEvaluation(Request $request, EntityManagerInterface $entityManager, int $classId): Response
     {
+         //Recuperer la classe
+         $classe = $entityManager->getRepository(Classes::class)->find($classId);
+
+         if (!$classe) {
+         throw $this->createNotFoundException('Classe non trouvée');
+        }
+        $cours = $entityManager->getRepository(Cours::class)
+        ->findBy(['classe' => $classe]);
+
+        // Récupérer les cours liés à la classe
         $evaluation = new Evaluations();
-        $form = $this->createForm(EvaluationsType::class, $evaluation);
+        $evaluation->setClasse( $classe);
+        $form = $this->createForm(EvaluationsType::class, $evaluation, [
+            'classe' => $classe,
+            'cours' => $cours,
+        ]);
     
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
+            $classe = $evaluation->getClasse();
+            $cours = $entityManager->getRepository(Cours::class)
+            ->findBy(['classe' => $classe]);
             try {
                 $entityManager->persist($evaluation);
                 $entityManager->flush();
     
-                $this->addFlash("succes","L'evaluation ". $evaluation->getNomEvaluation() ." a été enregistrée avec succès");
+                $this->addFlash("success","L'evaluation ". $evaluation->getNomEvaluation() ." a été enregistrée avec succès");
                 return $this->redirectToRoute('evaluation_list'); // Rediriger vers la liste des évaluations
             } catch (\Exception $e) {
-                $this->addFlash("error","Une erreur est survenue lors de l'enregistrement de l'évaluation.");
+                $this->addFlash("danger","Une erreur est survenue lors de l'enregistrement de l'évaluation.");
             }
         }
     
@@ -53,35 +72,83 @@ class EvaluationsController extends AbstractController
 
     #[Route('/list', name: 'evaluation_list')]
 
-    public function listEvaluations(Request $request, EvaluationsRepository $evaluationsRepository): Response
+    public function listEvaluations(Request $request, EvaluationsRepository $evaluationsRepository, int $classId, EntityManagerInterface $entityManager): Response
     {
+        $classe = $entityManager->getRepository(Classes::class)->find($classId);
+        
+         if (!$classe) {
+         throw $this->createNotFoundException('Classe non trouvée');
+        }
+
         $form = $this->createForm(ClasseEvaluationFilterType::class);
-    $form->handleRequest($request);
+        $form->handleRequest($request);
+        // $classe = $entityManager->getRepository(Classes::class)->find($classId);
+        //  if (!$classe) {
+        //  throw $this->createNotFoundException('Classe non trouvée');
+        // }
+        $evaluations = [];
 
-    $evaluations = [];
+        if ($form->isSubmitted() && $form->isValid()) {
+            $classe = $form->get('class_id')->getData(); // Récupérer l'objet Classes
+            $evaluations = $evaluationsRepository->findByClasse($classe); // Filtrer les évaluations
+        }
+        
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        $classe = $form->get('class_id')->getData(); // Récupérer l'objet Classes
-        $evaluations = $evaluationsRepository->findByClasse($classe); // Filtrer les évaluations
-    }
-
-    return $this->render('evaluations/evaluation_list.html.twig', [
-        'form' => $form->createView(),
-        'evaluations' => $evaluations,
-    ]);
-    }
-
-    #[Route('/{id}', name: 'cours_details')]
-    public function details(Cours $cours): Response
-    {
-        return $this->render('cours/details-cours.html.twig', [
-            'cours' => $cours,
+        return $this->render('evaluations/evaluation_list.html.twig', [
+            'form' => $form->createView(),
+            'evaluations' => $evaluations,
+            'classe' => $classe,
+            
         ]);
     }
 
+    #[Route('/{id<d+>}', name: 'evaluation_show')]
+public function show(int $id, EntityManagerInterface $entityManager): Response
+{
+    $evaluation = $entityManager->getRepository(Evaluations::class)->find($id);
+    if (!$evaluation) {
+        throw $this->createNotFoundException('Évaluation non trouvée');
+    }
+
+    // Récupérer la classe associée
+    $classe = $evaluation->getClasse();
+
+    return $this->render('evaluations/show.html.twig', [
+        'evaluation' => $evaluation,
+        'classe' => $classe,
+    ]);
+}
     
 
-    
+    // #[Route('/{id<d+>}/questions/new', name: 'evaluation_question_new', methods: ['GET', 'POST'])]
+    // public function newQuestion(Request $request, EntityManagerInterface $entityManager, int $id): Response
+    // {
+    //     // Récupérer l'évaluation
+    //     $evaluation = $entityManager->getRepository(Evaluations::class)->find($id);
+    //     if (!$evaluation) {
+    //         throw $this->createNotFoundException('Évaluation non trouvée');
+    //     }
+
+    //     // Créer une nouvelle question
+    //     $question = new Questions();
+    //     $form = $this->createForm(QuestionType::class, $question);
+    //     $form->handleRequest($request);
+
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $question->setEvaluations($evaluation); // Associer la question à l'évaluation
+    //         $entityManager->persist($question);
+    //         $entityManager->flush();
+
+    //         // Rediriger vers la même page pour afficher la nouvelle question
+    //         return $this->redirectToRoute('evaluation_question_new', ['id' => $id]);
+    //     }
+
+    //     return $this->render('evaluations/questions_evaluation.html.twig', [
+    //         'form' => $form->createView(),
+    //         'questions' => $evaluation->getQuestions(),
+    //         'evaluation' => $evaluation,
+    //     ]);
+    // }
 }
 
 // #[Route('/cours/by_class', name: 'cours_by_class', methods: ['POST'])]

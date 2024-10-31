@@ -13,38 +13,37 @@ class Responses
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'response_id')]
-    private ?Questions $question_id = null;
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?questions $question = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?TypeResponses $type_response_id = null;
+    private ?TypeResponses $type_response = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getQuestionId(): ?Questions
+    public function getQuestion(): ?questions
     {
-        return $this->question_id;
+        return $this->question;
     }
 
-    public function setQuestionId(?Questions $question_id): static
+    public function setQuestion(?questions $question): static
     {
-        $this->question_id = $question_id;
+        $this->question = $question;
 
         return $this;
     }
 
-    public function getTypeResponseId(): ?TypeResponses
+    public function getTypeResponse(): ?TypeResponses
     {
-        return $this->type_response_id;
+        return $this->type_response;
     }
 
-    public function setTypeResponseId(?TypeResponses $type_response_id): static
+    public function setTypeResponse(?TypeResponses $type_response): static
     {
-        $this->type_response_id = $type_response_id;
+        $this->type_response = $type_response;
 
         return $this;
     }

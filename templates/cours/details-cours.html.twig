@@ -1,6 +1,6 @@
 {# templates/classes/show.html.twig #}
 
-{% extends 'template.html.twig' %}
+{% extends 'template.html.twig' %} 
 
 {% block title %}Détails du cours{% endblock %}
 
@@ -9,11 +9,10 @@
     <h1>{{ cours.title }}</h1>
 
     <p>
-        Nom du cours: {{ cours.title }}<br>
-        {# Section: {{ cours.section }}<br> #}
+        Classe: {{ cours.classe }}<br>
         
     </p>
 
-    <a href="{{ path('classes_list') }}" class="btn btn-secondary">Retour à la liste des classes</a>
+    <a href="{{ path('cours_list') }}" class="btn btn-secondary">Retour à la liste des cours</a>
 
 {% endblock %}

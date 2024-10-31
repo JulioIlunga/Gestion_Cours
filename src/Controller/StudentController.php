@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 #[Route('admin/student')]
 
-class StudentContoller extends AbstractController
+class StudentController extends AbstractController
 {
     private $entityManager;
     public function __construct(EntityManagerInterface $entityManager)
@@ -80,7 +80,7 @@ class StudentContoller extends AbstractController
             $this->addFlash("success","L'étudiant(e) ".$student->getFirstName()." ".$student->getName(). " a été enregistré(e) avec succès");
             return $this->redirectToRoute('student-list');
         } else {
-            $this->addFlash("danger","L'enregistrement a échoué! Veuillez réessayer");
+            // $this->addFlash("danger","L'enregistrement a échoué! Veuillez réessayer");
 
             return $this->render('student/add-student.html.twig', [
                 'form' => $form->createView()

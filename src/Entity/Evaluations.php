@@ -33,7 +33,7 @@ class Evaluations
 
     #[ORM\Column(length: 255)]
 
-    private ?string $nom_evaluation = null;
+    public ?string $nom_evaluation = null;
 
 
     #[ORM\Column]
@@ -41,7 +41,7 @@ class Evaluations
 
    
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne] 
     private ?Cours $cours = null;
 
     #[ORM\ManyToOne(inversedBy: 'evaluations')]
@@ -102,7 +102,7 @@ class Evaluations
 
     public function setEvaluationType(string $evaluation_type): static
     {
-        $this->evaluation_type = $evaluation_type;
+        $this->evaluation_type = $evaluation_type; 
 
         return $this;
     }
@@ -193,5 +193,5 @@ class Evaluations
         return $this;
     }
 
- 
+    
 }

@@ -6,6 +6,7 @@ use App\Entity\Evaluations;
 use App\Entity\Questions;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,28 +17,23 @@ class QuestionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('evaluations', EntityType::class, [
-                'class' => Evaluations::class,
-                'choice_label' => 'nom_evaluation',
-                // 'multiple' => true,
-                // 'expanded' => false
-            ])
-                
-            ->add('nbr_questions', NumberType::class,[
-                    'label' => 'Nombre de questions'
-                ])
-            
-
-            ->add('enonce_question')
-            
-            ->add('Enregistrer', SubmitType::class)
-        ;
+        ->add('evaluations', EntityType::class, [
+            'class' => Evaluations::class,
+            'label' => 'Evaluation',
+            'choice_label' => 'nomEvaluation',
+            'data' => $options['evaluation'], // Pré-sélectionner l'évaluation
+            'disabled' => true,
+        ])
+        ->add('enonce_question')
+        ->add('Enregistrer', SubmitType::class)
+    ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Questions::class,
+            'evaluation' => null,
         ]);
     }
 }

@@ -1,0 +1,43 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}Liste des Questions{% endblock %}
+
+{% block body %}
+    <h1>Questions pour l'évaluation "{{ evaluation.nom_evaluation }}"</h1>
+    
+<a href="{{ path('question_new', {'classId': classe.id,'evaluationId': evaluation.id}) }}" class="btn btn-success mb-3">Ajouter une nouvelle question</a>
+    <h2>Liste des questions</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>N°</th>
+                <th>Énoncé</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in questions %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ question.enonceQuestion }}</td>
+                    <td>
+ <a href="{{ path('question_edit', { 'id': question.id, 'classId': classe.id, 'evaluationId': evaluation.id }) }}" class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit"></i>
+                        </a> 
+<a href="{{ path('question_delete', { 'id': question.id, 'classId': classe.id, 'evaluationId': evaluation.id }) }}" class="btn btn-warning btn-sm">
+                            <i class="fas fa-trash"></i>
+                        </a>  
+
+        </form>                   
+                         
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">Aucune question disponible.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+ 
+ {% endblock %}

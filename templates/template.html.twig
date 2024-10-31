@@ -195,8 +195,8 @@
                                             <span key="t-email">Evaluation</span>
                                         </a>
                                         <ul class="sub-menu" aria-expanded="false">
-                                            <li><a href="{{path('evaluation_list')}}" key="t-inbox">Liste des evaluations</a></li>
-                                            <li><a href="{{path('evaluation_create')}}" key="t-inbox">Creer une evaluation</a></li>
+                                            {# <li><a href="{{path('evaluation_list','classId': classe.id)}}" key="t-inbox">Liste des evaluations</a></li> #}
+                                            {# <li><a href="{{path('evaluation_create')}}" key="t-inbox">Creer une evaluation</a></li> #}
                                         </ul>
                                         </ul>
                                     </li>
@@ -354,7 +354,7 @@
 
         <!-- Right bar overlay-->
         <div class="rightbar-overlay"></div>
-
+        {% block javascripts %}
         <!-- JAVASCRIPT -->
         <script src="{{asset('assets/libs/jquery/jquery.min.js')}}"></script>
         <script src="{{asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
@@ -369,7 +369,7 @@
         <script src="{{asset('assets/js/pages/dashboard-blog.init.js')}}"></script>
 
         <script src="{{asset('assets/js/app.js')}}"></script>
-
+        {% endblock %}
     </body>
 <!-- Mirrored from themesbrand.com/skote-symfony/layouts/dashboard-blog.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 06 Apr 2022 15:32:46 GMT -->
 </html>

@@ -38,24 +38,26 @@
 
     {{ form_end(form) }}
 
-// <script>
-//     // Récupérer le conteneur des questions
-//     var container = document.getElementById('questions_container');
-//     // Récupérer le prototype (modèle de champ de question)
-//     var prototype = container.dataset.prototype;
-//     var index = {{ form.questions|length }};
-
-//     document.getElementById('add-question-btn').addEventListener('click', function () {
-//         // Remplacer "__name__" dans le prototype par l'index actuel
-//         var newForm = prototype.replace(/__name__/g, index);
-
-//         // Ajouter le nouveau formulaire dans le conteneur
-//         container.insertAdjacentHTML('beforeend', newForm);
-
-//         // Incrémenter l'index pour la prochaine question
-//         index++;
-//     });
-// </script>
+{# {% block javascripts %}
+    <script>
+        document.getElementById('{{ form.classe.vars.id }}').addEventListener('change', function() {
+            var classeId = this.value;
+            fetch('/admin/classes/' + classeId + '/cours')
+                .then(response => response.json())
+                .then(data => {
+                    var coursSelect = document.getElementById('{{ form.cours.vars.id }}');
+                    coursSelect.innerHTML = '';
+                    data.forEach(cours => {
+                        var option = document.createElement('option');
+                        option.value = cours.id;
+                        option.text = cours.nom;
+                        coursSelect.add(option);
+                    });
+                })
+                .catch(error => console.error(error));
+        });
+    </script>
+{% endblock %} #}
 
    
 {% endblock %}

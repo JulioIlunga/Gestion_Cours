@@ -12,7 +12,7 @@ class CoursClasses
     #[ORM\ManyToOne(targetEntity: Cours::class)]
     #[ORM\JoinColumn(name: 'cours_id', referencedColumnName: 'id', nullable: false)]
     #[ORM\Id] // cours_id fait partie de la clé primaire composite
-    private ?Cours $cours = null;
+    private ?Cours $cours = null; 
 
     #[ORM\ManyToOne(targetEntity: Classes::class)]
     #[ORM\JoinColumn(name: 'classe_id', referencedColumnName: 'id', nullable: false)]

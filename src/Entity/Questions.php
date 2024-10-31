@@ -16,28 +16,18 @@ class Questions
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $enonce_question = null;
+    public ?string $enonce_question = null;
 
-    /**
-     * @var Collection<int, Responses>
-     */
-    #[ORM\OneToMany(targetEntity: Responses::class, mappedBy: 'question_id')]
-    private Collection $response_id;
+   
 
-    #[ORM\ManyToOne(inversedBy: 'questions')]
+    #[ORM\ManyToOne(targetEntity:Evaluations::class, inversedBy: 'questions')]
     private ?Evaluations $evaluations = null;
 
-    #[ORM\Column]
-    private ?int $nbr_questions = null;
-
+    
   
 
   
-    public function __construct()
-    {
-        $this->response_id = new ArrayCollection();
-        
-    }
+    
 
     public function getId(): ?int
     {
@@ -56,36 +46,8 @@ class Questions
         return $this;
     }
 
-    /**
-     * @return Collection<int, Responses>
-     */
-    public function getResponseId(): Collection
-    {
-        return $this->response_id;
-    }
-
-    public function addResponseId(Responses $responseId): static
-    {
-        if (!$this->response_id->contains($responseId)) {
-            $this->response_id->add($responseId);
-            $responseId->setQuestionId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeResponseId(Responses $responseId): static
-    {
-        if ($this->response_id->removeElement($responseId)) {
-            // set the owning side to null (unless already changed)
-            if ($responseId->getQuestionId() === $this) {
-                $responseId->setQuestionId(null);
-            }
-        }
-
-        return $this;
-    }
-
+   
+    
     public function getEvaluations(): ?Evaluations
     {
         return $this->evaluations;
@@ -98,17 +60,7 @@ class Questions
         return $this;
     }
 
-    public function getNbrQuestions(): ?int
-    {
-        return $this->nbr_questions;
-    }
-
-    public function setNbrQuestions(int $nbr_questions): static
-    {
-        $this->nbr_questions = $nbr_questions;
-
-        return $this;
-    }
+   
 
    
 

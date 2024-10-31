@@ -20,16 +20,14 @@
                 <tr>
                     <th>Nom</th>
                     <th>Classe</th>
-                    <th>Enseignant</th>
                 </tr>
             </thead>
             <tbody>
                 {% for cours in cours %}
                     <tr>
                         <td>{{ cours.title }} </td>
-                        {# <td>{{ cours.classe_id }}</td> #}
-                        <td>{{ cours.teacher }}</td>
-                        <td>{{ cours.teacher }}</td>
+                        <td>{{ cours.classe }}</td>
+                        {# <td>{{ cours.teacher }}</td> #}
                         <td> <a href="{{ path('cours_details', { id: cours.id }) }}" title="Voir les détails">
                                 <i class="fas fa-info"></i> {# Icône "+" #}
                             </a></td>

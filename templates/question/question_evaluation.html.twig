@@ -1,0 +1,49 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}Ajouter une Question{% endblock %}
+
+{% block body %}
+    <h1>Evaluation "{{ evaluation.nom_evaluation }}"</h1>
+    <h2>Classe : {{evaluation.classe}}</h2>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+    <h2>Questions</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>N°</th>
+                <th>Énoncé</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in questions %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ question.enonceQuestion }}</td>
+                    <td>
+                        <a href="{{ path('question_edit', { 'id': question.id, 'classId': classe.id, 'evaluationId': evaluation.id }) }}" class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit"></i>
+                        </a>  
+                        
+                        <a href="{{ path('question_delete', { 'id': question.id, 'classId': classe.id, 'evaluationId': evaluation.id }) }}" class="btn btn-warning btn-sm">
+                            <i class="fas fa-trash"></i>
+                        </a>  
+{#<form action="{{ path('question_delete', { 'classId': classId, 'evaluationId': evaluationId, 'id': question.id }) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette question ?')">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete_question_' ~ question.id) }}">
+            <button type="submit" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash"></i>
+            </button>
+        </form>  #}           
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">Aucune question pour le moment.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}                                    
