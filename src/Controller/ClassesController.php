@@ -55,15 +55,16 @@ class ClassesController extends AbstractController
     }
  
     #[Route('/{id}', name: 'classes_details')]
-    public function details(Classes $classe): Response
+    public function details(Classes $classe, EntityManagerInterface $entityManager): Response
     {
+        $entityManager->refresh($classe);
+
         $studentCount = $classe->getStudentsCount(); 
         return $this->render('classes/details-classe.html.twig', [
             'classe' => $classe,
             'studentCount' => $studentCount,
         ]);
     }
-
     #[Route('{classId}/cours', name: 'admin_classe_cours')]
     public function getCoursForClasse(int $classId, EntityManagerInterface $entityManager): JsonResponse
     {

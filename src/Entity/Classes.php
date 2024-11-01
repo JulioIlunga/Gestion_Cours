@@ -97,12 +97,7 @@ class Classes
  
     public function getStudentsCount(): int
     {
-        if ($this->students === null) {
-            return 0;
-        }
-
-    
-        return $this->students->count();
+        return $this->students ? $this->students->count() : 0;
     }
 
     public function getHeadStudent(): ?Students // Corrigé pour retourner un seul étudiant
