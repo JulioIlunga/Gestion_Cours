@@ -1,4 +1,4 @@
-{# templates/classes/show.html.twig #}
+{# templates/classes/show.html.twig #} 
 
 {% extends 'template.html.twig' %}
 
@@ -9,7 +9,7 @@
         {% for message in messages %}
             <div class="alert alert-{{ label }}">
                 {{ message }}
-            </div>
+            </div> 
         {% endfor %}
     {% endfor %}
     <h1>{{ classe.name }}</h1>
@@ -19,12 +19,11 @@
         {% if classe.level != "Maternelle" %}
             Section: {{ classe.section }}<br>
         {% endif %}
+        {# Nombre d'étudiants : {{studentCount}} #}
+   
     </p>
-    <p> Nombre d'étudiants : {{studentCount}}</p>
-    {{ dump(studentCount) }}
     <a href="{{ path('classes_list') }}" class="btn btn-secondary">Retour à la liste des classes</a>
     <a href="{{ path('evaluation_list', {'classId': classe.id}) }}" class="btn btn-secondary">Voir la liste des evaluations</a>
-    <a href="{{path('evaluation_create',{'classId': classe.id})}}" class="btn btn-secondary">Créer une evaluation</a>
 
 
 

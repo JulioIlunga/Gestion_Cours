@@ -15,7 +15,14 @@ class StudentsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Students::class);
     }
-
+    public function findBySearch($search)
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.name LIKE :search OR s.firstname LIKE :search')
+            ->setParameter('search', '%' . $search . '%')
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return Students[] Returns an array of Students objects
 //     */

@@ -9,26 +9,51 @@
             </div>
         {% endfor %}
     {% endfor %}
-<div class="row">
-    {% for student in students %}
-    <div class="card" style="width: 18rem; margin = 5px;">
-        <div class="card-body" > 
-            <h5 class="card-title">{{ student.name}}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ student.firstname }} {{ student.name }}</h6>
-            <a href="{{ path('student-detail', {id: student.id}) }}" class="card-link">
-                <i class="fas fa-info-circle"></i>
-            </a>
-             {# <a href="{{ path('personne.detail', {id: student.id}) }}" class="card-link">
-                <i class="fas fa-info-circle"></i>
-            </a>
-            <a href="{{ path('personne.delete', {id: student.id}) }}" class="card-link">
-                <i class="fas fa-user-times"></i>
-            </a>
-            <a href="{{ path('personne.edit', {id: student.id}) }}" class="card-link">
-                <i class="fas fa-user-edit"></i> 
-            </a> #}
+
+    <form method="get" action="{{ path('student-list') }}" style="margin-bottom: 20px;">
+    
+
+        <div class="form-group">
+            <label for="class_id">Sélectionnez une classe</label>
+            <select name="class_id" id="class_id" class="form-control" onchange="this.form.submit()">
+                <option value="">Toutes les classes</option>
+                {% for class in classes %}
+                    <option value="{{ class.id }}" {% if class.id == selectedClass %}selected{% endif %}>
+                        {{ class.name }}
+                    </option>
+                {% endfor %}
+            </select>
         </div>
+
+        {#<div class="form-group">
+        <label for="search">Rechercher un étudiant par nom</label>
+        <input type="text" name="search" id="search" class="form-control" placeholder="Nom de l'étudiant" value="{{ app.request.get('search') }}">
     </div>
-    {% endfor %}
-</div>
+            <button type="submit" class="btn btn-primary" style="margin-top :20px;">Rechercher</button>#}
+        
+
+    </form>
+<div class="row">
+        {% if students is empty %}
+            <p>Aucun étudiant trouvé.</p>
+
+        {% else %}
+            {% for student in students %}
+                <div class="card" style="width: 18rem; margin: 5px;">
+                    <img src="{{ asset('uploads/images/' ~ student.photoFilename) }}" class="card-img-top rounded-circle " alt="Photo {{ student.name }}" style="width: 60px; height: auto;">
+                    <div class="card-body"> 
+                        <h5 class="card-title">{{ student.name }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ student.firstname }} {{ student.name }}</h6>
+                        <a href="{{ path('student-detail', {id: student.id}) }}" class="card-link">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
+                    </div>
+                </div>
+
+            {% endfor %}
+        {% endif %}
+
+    </div>
+    <a href="{{ path('student_add') }}" class="btn btn-success" style = "width : 20% ">Ajouter un élève</a>
+
 {% endblock %}

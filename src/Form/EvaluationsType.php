@@ -33,6 +33,7 @@ class EvaluationsType extends AbstractType
             'label' => 'Classe',
             'multiple' => false,
             'expanded' => false,
+            'placeholder' => 'Sélctionner une  classe'
             
         ])
         ->add('cours', EntityType::class, [

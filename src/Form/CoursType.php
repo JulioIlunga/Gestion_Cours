@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 class CoursType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
+    { 
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Nom du cours',
@@ -29,6 +29,7 @@ class CoursType extends AbstractType
 
             ->add('classe', EntityType::class, [ // Champ pour choisir la classe
                 'class' => Classes::class,
+                //'data' => $options['data']->getClasse(), 
                 'choice_label' => 'name', // Afficher le nom de la classe
                 'label' => 'Classe',
 

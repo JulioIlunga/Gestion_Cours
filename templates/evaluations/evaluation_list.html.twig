@@ -11,6 +11,8 @@
     {{ form_start(form) }}
         {{ form_widget(form) }}
         <button type="submit" class="btn btn-primary">Rechercher</button>
+        <a href="{{path('evaluation_create',{'classId': classe.id})}}" class="btn btn-secondary">Créer une evaluation</a>
+
     {{ form_end(form) }}
 
     {% if evaluations is not empty %}
@@ -40,13 +42,15 @@
                         </td>
                     </tr>
                 {% else %}
-                    <tr>
-                        <td colspan="6">Aucune évaluation trouvée.</td>
-                    </tr>
+                    
+
                 {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <p>Aucune évaluation trouvée.</p>
+        <tr>
+            <td colspan="6">Aucune évaluation trouvée.</td>
+
+        </tr>
     {% endif %}
 {% endblock %}

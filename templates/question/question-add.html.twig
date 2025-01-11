@@ -1,31 +1,47 @@
-{% extends 'template.html.twig'%}
-
-{% block title %}AddQuestion Form{% endblock %}
+{% extends 'template.html.twig' %}
 
 {% block body %}
-{% for label, messages in app.flashes %}
-        {% for message in messages %}
-        
-            <div class="alert alert-{{ label }}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endfor %}
-{{ form_start(form) }}
+    <h1>Créer une nouvelle question</h1>
+    
+    {{ form_start(form) }}
 
-    
-    {{ form_row(form.evaluations) }}
-        
-    
-    
-    {{ form_row(form.enonce_question) }}
-    
+    <div class="form-group">
+        {{ form_row(form.evaluations) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(form.enonce_question) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(form.type) }}
+    </div>
 
+    <!-- Conteneur des assertions -->
+    <div class="form-group" id="assertions-container">
+        {{ form_row(form.assertions) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_widget(form.Enregistrer, {'attr': {'class': 'btn btn-primary'}}) }}
+    </div>
 
     {{ form_end(form) }}
-<div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const collectionHolder = document.querySelector('#form_assertions');
+    const addButton = document.querySelector('.add_assertion');
 
+    addButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        const newAssertion = collectionHolder.dataset.proto.replace(/__name__/g, collectionHolder.children.length);
+        collectionHolder.insertAdjacentHTML('beforeend', newAssertion);
+    });
 
-</div>
-
+    collectionHolder.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove_assertion')) {
+            e.preventDefault();
+            e.target.closest('.assertion').remove();
+        }
+    });
+});
+    </script>
 {% endblock %}

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Classes;
 use App\Entity\Students;
+use Doctrine\DBAL\Types\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType; // Correct import
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -36,10 +37,12 @@ class StudentType extends AbstractType
             ->add('place_of_birth')
             ->add('parent_phone')
             ->add('adress')
-            ->add('generale_average')
+            
+        
             ->add('class_id', EntityType::class, [
+                'label' => "Classe",
                 'class' => Classes::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
             ])
             ->add('photo', FileType::class, [
                 'label' => 'Photo',

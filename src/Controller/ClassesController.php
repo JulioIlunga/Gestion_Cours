@@ -53,16 +53,16 @@ class ClassesController extends AbstractController
             'form' => $form->createView(),
         ]); 
     }
- 
+
     #[Route('/{id}', name: 'classes_details')]
     public function details(Classes $classe, EntityManagerInterface $entityManager): Response
     {
         $entityManager->refresh($classe);
-
-        $studentCount = $classe->getStudentsCount(); 
+        // $students = $classe->getStudents();
+        // $studentCount = $students->count(); 
         return $this->render('classes/details-classe.html.twig', [
             'classe' => $classe,
-            'studentCount' => $studentCount,
+            // 'studentCount' => $studentCount,
         ]);
     }
     #[Route('{classId}/cours', name: 'admin_classe_cours')]

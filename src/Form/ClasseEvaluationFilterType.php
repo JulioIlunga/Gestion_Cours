@@ -14,10 +14,12 @@ class ClasseEvaluationFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('class_id', EntityType::class, [ // Remplacer TextType par EntityType
-            'class' => Classes::class, // Préciser l'entité à utiliser
-            'choice_label' => 'name', // Afficher le nom de la classe comme libellé
+        ->add('class_id', EntityType::class, [
+            'class' => Classes::class,
             'label' => 'Classe',
+            'choice_label' => 'name', // Remplacez par le champ que vous souhaitez afficher
+            'data' => $options['classe'], // Préselectionner la classe
+            'placeholder' => 'Sélectionnez une classe',
         ])
         ;
     }
@@ -26,6 +28,7 @@ class ClasseEvaluationFilterType extends AbstractType
     {
         $resolver->setDefaults([
             // Configure your form options here
+            'classe'=> null,
         ]);
     }
 }

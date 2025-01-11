@@ -74,7 +74,7 @@ class StudentController extends AbstractController
                 // Enregistrer le nom du fichier dans l'entité Student
                $student->setPhotoFilename($newFilename); // Utiliser le nom correct de la propriété
             }
-
+ 
             $manager = $doctrine->getManager();
             $manager->persist($student);
             $manager->flush();
@@ -93,15 +93,41 @@ class StudentController extends AbstractController
 
     #[Route('/list', name:'student-list')]
 
-    public function studentList( ClassesRepository $classesRepository,StudentsRepository $studentsRepository): Response {
+    public function studentList( ClassesRepository $classesRepository,StudentsRepository $studentsRepository, Request $request): Response {
 
-       
-    
+        $classes = $classesRepository->findAll();
+        $selectedClass = $request->query->get('class_id');
         $students = $studentsRepository->findAll(); 
-        
+        $search = $request->query->get('search'); // Récupérer la valeur de recherche
+
+    // Créer une requête de base
+    $queryBuilder = $studentsRepository->createQueryBuilder('s');
+
+    // Appliquer le filtre de recherche si une valeur est fournie
+    if ($search) {
+        $queryBuilder->andWhere('s.name LIKE :search OR s.firstname LIKE :search')
+                     ->setParameter('search', '%' . $search . '%');
+    }
+
+    // Appliquer le filtre de classe si une classe est sélectionnée
+    if ($selectedClass) {
+        $queryBuilder->andWhere('s.class_id = :classId')
+                     ->setParameter('classId', $selectedClass);
+    }
+
+    // Exécuter la requête
+    $students = $queryBuilder->getQuery()->getResult();
+        if($selectedClass) {
+            $students = $studentsRepository->findBy(['class_id'=> $selectedClass]);
+        }else {
+            $students = $studentsRepository->findAll();
+        }
 
         return $this->render('student/students-list.html.twig', [
             'students' => $students,
+            'classes' => $classes,
+            'selectedClass' => $selectedClass,
+            'search' => $search 
         ]);
     }
 

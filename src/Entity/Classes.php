@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClassesRepository::class)]
 class Classes
-{
+{ 
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -28,10 +28,11 @@ class Classes
      */
     private $cours;
     /**
-     * @ORM\OneToMany(targetEntity: Students::class, mappedBy="class_id")
+     * @return Collection<int, Students>
+     *
+     * @ORM\OneToMany(targetEntity: Students::class, mappedBy="class_id",fetch="EAGER")
      */
-    private $students;
-
+    private collection $students;
     /**
      * @ORM\OneToOne(targetEntity: Students::class, mappedBy="class_id")
      */
@@ -43,18 +44,21 @@ class Classes
     #[ORM\OneToMany(targetEntity: Evaluations::class, mappedBy: 'classe')]
     private Collection $evaluations;
 
-   
-   
-
+  
     public function __construct()
     {
-        // $this->head_student = new ArrayCollection();
-        $this->students = new ArrayCollection();
+        $this->students = new Arraycollection();
         $this->cours = new ArrayCollection();
         $this->evaluations = new ArrayCollection();
-        
     }
 
+   
+
+   
+    // public function getStudents(): Collection
+    // {
+    //     return $this->students;
+    // }
     public function getId(): ?int
     {
         return $this->id;
@@ -97,10 +101,14 @@ class Classes
  
     public function getStudentsCount(): int
     {
-        return $this->students ? $this->students->count() : 0;
+            // Vérifiez si $students est initialisé
+        if (!isset($this->students)) {
+            $this->students = new ArrayCollection();
+        }
+        return $this->students->count();
     }
 
-    public function getHeadStudent(): ?Students // Corrigé pour retourner un seul étudiant
+    public function getHeadStudent(): ?Students 
     {
         return $this->head_student;
     }

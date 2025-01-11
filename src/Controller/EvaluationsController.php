@@ -26,11 +26,12 @@ class EvaluationsController extends AbstractController
         return $this->render('evaluations/index.html.twig', [
             'controller_name' => 'EvaluationsController',
         ]);
-    }
-
+    } 
+ 
     #[Route('/create', name:'evaluation_create')]
     public function createEvaluation(Request $request, EntityManagerInterface $entityManager, int $classId): Response
     {
+        
          //Recuperer la classe
          $classe = $entityManager->getRepository(Classes::class)->find($classId);
 
@@ -61,7 +62,6 @@ class EvaluationsController extends AbstractController
                 $this->addFlash("success","L'evaluation ". $evaluation->getNomEvaluation() ." a été enregistrée avec succès");
                 return $this->redirectToRoute('evaluation_list'); // Rediriger vers la liste des évaluations
             } catch (\Exception $e) {
-                $this->addFlash("danger","Une erreur est survenue lors de l'enregistrement de l'évaluation.");
             }
         }
     
@@ -80,7 +80,9 @@ class EvaluationsController extends AbstractController
          throw $this->createNotFoundException('Classe non trouvée');
         }
 
-        $form = $this->createForm(ClasseEvaluationFilterType::class);
+        $form = $this->createForm(ClasseEvaluationFilterType::class, null, [
+            'classe' => $classe,
+        ]);
         $form->handleRequest($request);
         // $classe = $entityManager->getRepository(Classes::class)->find($classId);
         //  if (!$classe) {
